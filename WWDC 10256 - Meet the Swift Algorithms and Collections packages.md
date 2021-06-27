@@ -14,7 +14,7 @@
    - [OrderedDictionary](#OrderedDictionary)
 - [总结](#%E6%80%BB%E7%BB%93)
 # 前言
-程序 = 算法 + 数据结构。Swift 的标准库实现了三种通用的数据结构：Array，Set，Dictionary。与这些集合相匹配的  `sort`，`map`， `fliter` 等多个算法函数。使用这些内置算法，能够使得代码更加简洁，易读，而且性能更好，也成为了 Swift 最强大特性之一。今年更是发布了一个 Swift 算法和集合的开源包，在其中更新了更多的算法函数和数据结构
+程序 = 算法 + 数据结构。Swift 的标准库实现了三种通用的数据结构：Array，Set，Dictionary，使用与这些集合相匹配的  `sort`，`map`， `fliter` 等多个算法函数，能够使得代码更加简洁，易读，而且性能更好，也成为了 Swift 最强大特性之一。今年更是发布了一个 Swift 算法和集合的开源包，在其中更新了更多的算法函数和数据结构。
 ​
 
 本文基于 [Session  10256](https://developer.apple.com/videos/play/wwdc2021/10256/) 梳理，文章简单介绍其中一些算法和数据结构。需要提前了解的有：
@@ -31,54 +31,55 @@
 5. 集合部分排序
 6. 其他
 
-具体用法和效果可查阅开源地址：[Swift Algorithms](https://github.com/apple/swift-algorithms)。下面是算法列表的截图
+具体用法和效果可查阅开源地址：[Swift Algorithms](https://github.com/apple/swift-algorithms)。下面是算法列表的截图：
 ![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624782083765-cdc2177d-e649-4c7b-936f-a68c1127d35a.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=sv0cu&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=424104&status=done&style=none&taskId=u8aae34d5-a4bd-48ff-8d10-1b537c7fa02&width=656)
 下面列举几个 session 里印象比较深刻，或者平时业务开发可能使用得上的方法。
-### 分块算法函数 `chunks`
-根据函数的参数，当前元素与前一个元素“不同”时，这时候就需要分块。比如前后元素的某个值不相等：
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624783764017-012e54d8-c129-4d2d-bb26-ada978db58d3.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=b7JpO&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=381380&status=done&style=none&taskId=uade10f9b-889e-490e-9cd1-029ab294114&width=656)
+### 分块算法函数
+根据 `chunks` 函数的参数，当前元素与前一个元素“不同”时，这时候就需要分块。比如前后元素的某个值不相等：
+![wwdc2021-10256_hd-0012.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624806879891-6391c291-e375-4feb-81d0-74213fad6865.png#clientId=u0167fee0-687e-4&from=drop&id=u309ef539&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0012.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=755567&status=done&style=none&taskId=uc9248444-5adc-4161-89eb-e763085f2bc)
 或者是元素的类型不同：
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624783558932-8a133b8e-8d83-4806-860e-9c40aafb819c.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=TBG5V&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=224139&status=done&style=none&taskId=u98b58e05-1698-4d01-963a-9be3cc044db&width=656)
+![wwdc2021-10256_hd-0013.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807187024-f624c65c-f59d-475c-b1e7-191d194abf62.png#clientId=u0167fee0-687e-4&from=drop&id=ua5b4db6e&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0013.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=260339&status=done&style=none&taskId=u97e373e1-afc1-42c5-b8b2-8b43244576e)
 而当分块的参数可以是是块大小，此时就会出现“余数”块的情况：
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624783352021-6f966e99-53cd-44f6-a829-68b8ba025db0.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=OVkTI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=166050&status=done&style=none&taskId=ua250d39e-2835-4462-82e0-e70e4e269d6&width=656)
+![wwdc2021-10256_hd-0014.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807186989-de9753d4-1c06-49bc-96b9-246d4927034e.png#clientId=u0167fee0-687e-4&from=drop&id=u8977e89d&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0014.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=182753&status=done&style=none&taskId=u2628f08a-8880-4df4-91b0-87420b85ed3)
 在 seesion 中，假设了有一个消息的列表。现在需要将信息列表根据每一个小时进行分割，并显示对应的时间戳信息。下图就是实现的算法链：
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624784878728-b2e82ea6-a907-4e0d-9bba-0edbf4782d97.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=Nw3xi&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=309620&status=done&style=none&taskId=uff687f8d-97f4-4cfe-b32a-57016590fd1&width=656)
-### 窗口算法函数 `windows(ofCount:)` 
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624782986103-8b0acbe4-b06f-4c09-84c5-ab37f83bfb8d.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=FOHxR&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=206477&status=done&style=none&taskId=u8c549ff0-29aa-4de6-b1b1-2ce32921715&width=656)
+![wwdc2021-10256_hd-0015.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807187201-dc73bd04-19fc-45df-b57c-f3b2de3c7eed.png#clientId=u0167fee0-687e-4&from=drop&id=u0cf97135&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0015.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=405376&status=done&style=none&taskId=ueeb69853-fee8-44d4-87ab-354df2ef302)
+### 窗口算法函数
+`windows(ofCount:)` 窗口算法，会以窗口的形式遍历和输出：
+![wwdc2021-10256_hd-0016.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807187071-ba96ae31-33fd-4de2-a5a1-3f9515320e9f.png#clientId=u0167fee0-687e-4&from=drop&id=u17843faf&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0016.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=239725&status=done&style=none&taskId=uca3cb027-7827-4a5d-b8db-3cedda20615)
 `adjacentPairs` 函数和 `windows(ofCount: 2)` 函数的效果几乎一致。苹果开发人员考虑到一对数字这种特殊情况，而重新写了一个返回元组类型的方法。
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624783226919-c71553ff-ad98-46f2-ad38-40e914548ee2.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=XDuNf&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=175178&status=done&style=none&taskId=uee045e71-27cb-402a-8e43-cde113e793b&width=656)
+![wwdc2021-10256_hd-0017.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807187003-935ade45-09b1-4c48-ba82-323adec106f8.png#clientId=u0167fee0-687e-4&from=drop&id=u8a66957b&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0017.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=190021&status=done&style=none&taskId=u490dfc52-d189-4061-933a-afbacd5ddd5)
 ### CompactMap 
 `compactMap` 方法用来过滤集合中的 nils 并映射到解包之后结果集合。`compactMap` 方法是 `filter` 和 `map` 两个方法的合体，其中 `filter` 方法筛选符合条件的元素集合，`map` 是映射出一个新的集合。
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624698875064-c794ae66-3010-40d8-84f1-ba6413a5d064.png#clientId=ud72134d0-2595-4&from=paste&height=373&id=u6b834560&margin=%5Bobject%20Object%5D&name=image.png&originHeight=746&originWidth=1312&originalType=binary&ratio=2&size=208406&status=done&style=none&taskId=u35b919aa-ae74-4345-8ead-33833dca063&width=656)
+![wwdc2021-10256_hd-0018.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807188588-67c7793a-e1cc-4832-98d6-aab7a5938636.png#clientId=u0167fee0-687e-4&from=drop&id=uaedd1aed&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0018.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=236581&status=done&style=none&taskId=ub56e053e-7c3b-49a7-a90c-a4be5208a0b)
 上面图中的代码等同于
 ```
 messages
-	.filter { $0.attachment != nil }
-  .map { $0.attachment! }
+    .filter { $0.attachment != nil }
+    .map { $0.attachment! }
 ```
 业务场景：图片列表按从到旧排列，最大个数为 6 个
-### ![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624698747515-f2cbf238-8806-416f-9f22-f5b2911471bc.png#clientId=ud72134d0-2595-4&from=paste&height=373&id=HSD5S&margin=%5Bobject%20Object%5D&name=image.png&originHeight=746&originWidth=1312&originalType=binary&ratio=2&size=336287&status=done&style=none&taskId=uf3dca274-9ce3-462a-98a5-3e7d492de36&width=656)
+![wwdc2021-10256_hd-0019.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807188800-04dcf83a-cf15-4124-8aac-9612c210c66c.png#clientId=u0167fee0-687e-4&from=drop&id=u8cd3ca25&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0019.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=333799&status=done&style=none&taskId=uc3dd3f0b-705a-4c67-b35e-e92b180a94f)
 ### FlatMap
 `FlatMap` 将集合中的元素都映射到单层的集合中。
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624698823022-d139d2e4-4426-40d3-b4b1-7bc1256620d5.png#clientId=ud72134d0-2595-4&from=paste&height=373&id=nBgK8&margin=%5Bobject%20Object%5D&name=image.png&originHeight=746&originWidth=1312&originalType=binary&ratio=2&size=197015&status=done&style=none&taskId=u996e0304-c37c-42b2-9439-e0b32c2fb8b&width=656)
+![wwdc2021-10256_hd-0020.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807188639-9baa9386-d1b2-4089-9711-499ca107f0af.png#clientId=u0167fee0-687e-4&from=drop&id=u3eba1eaa&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0020.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=224679&status=done&style=none&taskId=u9570cbe2-f1eb-4187-a0d6-c5408c1e75a)
 上面图中的代码等同于
 ```
 messages
-	.map { $0.makeMessageParts() }
-  .joined()
+    .map { $0.makeMessageParts() }
+    .joined()
 ```
-### lazy 算法链
+### 算法链
 在下图中的注释会发现 `join` 方法并没有返回一个分配了新内存并初始化的数组，而是返回一个 FlattenSequence：
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624698678994-6caab919-db21-46b7-af26-b824942ad90f.png#clientId=ud72134d0-2595-4&from=paste&height=373&id=uffa6e607&margin=%5Bobject%20Object%5D&name=image.png&originHeight=746&originWidth=1312&originalType=binary&ratio=2&size=205793&status=done&style=none&taskId=ua34a5b13-d0ad-4995-a122-24704e2f28d&width=656)
+![wwdc2021-10256_hd-0021.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807188817-d399ffdc-93ab-4ff5-9ddb-5ba8949ac99b.png#clientId=u0167fee0-687e-4&from=drop&id=ud58f4412&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0021.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=245056&status=done&style=none&taskId=u2ec2da1b-5d74-488a-a7ff-cf16372824a)
 FlattenSequence 被称作 “lazy adapter” -- 惰性适配器。在多数情况下，FlattenSequence 的表现和 Array 一致，用视频中的话形容是一个 “thin wrapper”，占用内存较小可以比较随意的生成。惰性适配器，指带有 `lazy` 特性，像是 Swift 中的 Copy On Write ，也就是说是按需处理元素，而不是预先处理好所有的工作。
 ​
 
 上面提到 `compactMap` 函数里，直接返回的是 Array 类型。那么这时候可以手动加上 lazy 的特性么？
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624698632694-b2703021-6b21-4e64-84fa-65448cd1697a.png#clientId=ud72134d0-2595-4&from=paste&height=373&id=u47e75755&margin=%5Bobject%20Object%5D&name=image.png&originHeight=746&originWidth=1312&originalType=binary&ratio=2&size=189858&status=done&style=none&taskId=u5a3d5c8c-205f-4bfa-b591-15c552d493c&width=656)
+![wwdc2021-10256_hd-0022.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807188860-a78252fe-76b6-426c-97cb-038b3aa51438.png#clientId=u0167fee0-687e-4&from=drop&id=u6671dabd&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0022.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=237966&status=done&style=none&taskId=u61545967-95aa-40f7-a9e5-176cf3b8663)
 当然也是可以的，在算法链的开头添加 .lazy ，那么在链上任何采用闭包的算法拥有 `lazy` 特性：
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624698555232-b308211f-9036-415e-b8f6-32dd2caa802c.png#clientId=ud72134d0-2595-4&from=paste&height=373&id=u626413ff&margin=%5Bobject%20Object%5D&name=image.png&originHeight=746&originWidth=1312&originalType=binary&ratio=2&size=173196&status=done&style=none&taskId=u89460f7b-8eb8-481f-80d3-38329745be7&width=656)
+![wwdc2021-10256_hd-0023.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807189704-ce9adb93-4ac7-40fc-b8d0-a42d040babbe.png#clientId=u0167fee0-687e-4&from=drop&id=u8ef0708f&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0023.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=247940&status=done&style=none&taskId=u335b5361-2295-48c3-8c71-3281604c846)
 而如果需要最终的结果也是一个 Array 类型，只需要将算法链放在 Array 初始化方法里：
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624699097246-119cdfdc-16e9-4d34-9b72-64537a3acd82.png#clientId=ud72134d0-2595-4&from=paste&height=373&id=u11021eb0&margin=%5Bobject%20Object%5D&name=image.png&originHeight=746&originWidth=1312&originalType=binary&ratio=2&size=164107&status=done&style=none&taskId=u833929a3-0b6c-4a48-b408-c2a024239fa&width=656)
+![wwdc2021-10256_hd-0024.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807189760-7fc69257-6a70-405a-8f44-c606e10ea1b8.png#clientId=u0167fee0-687e-4&from=drop&id=u07d3238f&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0024.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=178055&status=done&style=none&taskId=uae322a31-25c5-4771-af0d-fb36f47ef12)
 需要注意的是：将 Array 类型转化成惰性适配器是是不可以的。`lazy` 不是灵丹妙药，在序列只做一次迭代时，利用lazy 可以节省一些不需要工作。但是需要多次迭代序列的时候就不要适合。所以就像一般的懒加载属性一样，懒加载之后并保存结果。
 # Collection
 开源包里新增的三种数据结构：
@@ -88,9 +89,10 @@ FlattenSequence 被称作 “lazy adapter” -- 惰性适配器。在多数情�
 - OrderedDictionary 有序字典
 
 这三种也是常见的数据结构类型，而且也是标准集合类型的变体。开源地址：[Swift Collection](https://github.com/apple/swift-collections)
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624785923385-4213e504-2ad2-48d9-81ce-c58f2b34217d.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=u7d1a5061&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=448329&status=done&style=none&taskId=uc7f0fbec-4301-41ca-b091-2ada8f1ae18&width=656)
+![wwdc2021-10256_hd-0025.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624807190835-24565362-b737-4616-9663-99db93f1f975.png#clientId=u0167fee0-687e-4&from=drop&id=u63bc6724&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0025.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=951359&status=done&style=none&taskId=u4ebb1923-68f4-429f-98c2-1066381b672)
 ### Deque
-"double-ended queue" 双端队列，苹果工程师在项目中缩写为了 Deque。双端队列相比较于一般队列的先进先出单个方向的操作，提供了对称性的操作。而在 LeetCode 上就有一道算法题 [设计循环双端队列](https://leetcode-cn.com/problems/design-circular-deque/) 。![wwdc2021-10256_hd-0008.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624802129968-479290a7-89df-425e-92b6-d82a03a75f53.png#clientId=uf00e3866-b63f-4&from=drop&id=u2ae54b9c&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0008.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=207432&status=done&style=none&taskId=u971d46ab-7630-4c14-806c-a9bbf32e15f)
+"double-ended queue" 双端队列，苹果工程师在项目中缩写为了 Deque。双端队列相比较于一般队列的先进先出单个方向的操作，提供了对称性的操作。而在 LeetCode 上就有一道算法题 [设计循环双端队列](https://leetcode-cn.com/problems/design-circular-deque/) 。
+![wwdc2021-10256_hd-0008.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624802129968-479290a7-89df-425e-92b6-d82a03a75f53.png#clientId=uf00e3866-b63f-4&from=drop&id=u2ae54b9c&margin=%5Bobject%20Object%5D&name=wwdc2021-10256_hd-0008.png&originHeight=1080&originWidth=1920&originalType=binary&ratio=2&size=207432&status=done&style=none&taskId=u971d46ab-7630-4c14-806c-a9bbf32e15f)
 双端队列 Deque 在使用上和 Array 比较接近。在一些方法的底层实现上就大有不同，例如在数组和双端队列中插入数据或翻转数据上，性能有很大的差距。
 ![image.png](https://cdn.nlark.com/yuque/0/2021/png/1274781/1624786648704-62fa541e-288b-438e-a653-4d67cb373a15.png#clientId=u51da3c5f-96d3-4&from=paste&height=372&id=ub7a3b75a&margin=%5Bobject%20Object%5D&name=image.png&originHeight=744&originWidth=1312&originalType=binary&ratio=2&size=207445&status=done&style=none&taskId=ua3fbe1a2-d0bd-4adb-ae72-b291f4a5833&width=656)
 下面的图片可以看出，在插入新元素的时候，ABC 的位置其实是从后插入的，而改变的是元素对应的索引。在删除中间元素的时候，选择移动前的元素而不是后面的元素，随机删除元素的平均速度提高了一倍。
